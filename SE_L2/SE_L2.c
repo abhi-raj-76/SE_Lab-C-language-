@@ -19,6 +19,33 @@ int searchUSN()
     scanf("%d",&USN);
     return 1;
 }
+void subMenu()
+{
+    int choice = 0;
+    while(choice != 4)
+    {
+        printf("---------------Sub Menu-----------------\n");
+        printf("1.Update Reading: \n");
+        printf("2.Bill: \n");
+        printf("3.Report: \n");
+        printf("4.Exit: \n:");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                return;
+            default:
+                printf("INVALID INPUT!!!");
+                return;
+        }
+    }
+}
 void Menu()
 {
     int choice = 0;
