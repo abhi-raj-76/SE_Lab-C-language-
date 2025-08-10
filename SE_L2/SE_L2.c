@@ -14,7 +14,9 @@ typedef struct registerUser
 }RU;
 int newUSN()
 {
-
+    FILE *usnData;
+    usnData = fopen("USN.txt","a+");
+    fclose(usnData);
 }
 int searchUSN()
 {
