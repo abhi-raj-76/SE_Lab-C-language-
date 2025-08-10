@@ -15,16 +15,9 @@ typedef struct registerUser
 int searchUSN()
 {
     int USN;
-    int USNArr[50];
     printf("Enter your registered USN: \n:");
     scanf("%d",&USN);
-    for(int i = 0; i<50; i++)
-    {
-        if(USN == USNArr[i])
-            return 1;
-        else
-            return 0;
-    }
+    return 1;
 }
 void Menu()
 {
