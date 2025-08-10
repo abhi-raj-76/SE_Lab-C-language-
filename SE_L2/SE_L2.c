@@ -12,12 +12,34 @@ typedef struct registerUser
     float Dues;
     bool loan;
 }RU;
+int newUSN()
+{
+
+}
 int searchUSN()
 {
     int USN;
     printf("Enter your registered USN: \n:");
     scanf("%d",&USN);
     return 1;
+}
+void RegisterUser()
+{
+    RU u1;
+    printf("Enter New user name:");
+    scanf("%s",&u1.name);
+    printf("Enter New user Mobile Number:");
+    scanf("%d",&u1.mob);
+    printf("Enter New user mail:");
+    scanf("%s",&u1.email);
+    printf("Enter New user address:");
+    scanf("%s",&u1.address);
+    printf("Enter New user CMR:");
+    scanf("%f",&u1.CMR);
+    u1.USN = newUSN();
+    u1.OMR = 0;
+    u1.loan = false;
+    u1.Dues = 0;
 }
 void subMenu()
 {
@@ -66,6 +88,7 @@ void Menu()
                     Menu();
                 break;
             case 2:
+                RegisterUser();
                 break;
             case 3:
                 return;
