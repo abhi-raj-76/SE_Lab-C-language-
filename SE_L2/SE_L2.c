@@ -14,6 +14,16 @@ typedef struct registerUser
 
 void Menu()
 {
-    printf("Registered User: ");
-    printf("Not Registered User: ");
+    printf("---------------Menu----------------");
+    printf("1.Registered User: ");
+    printf("2.Not Registered User: ");
+    int choice;
+    scanf("%d",&choice);
+    switch(choice)
+    {
+        case 1:
+            break;
+        case 2:
+            break;
+    }
 }
