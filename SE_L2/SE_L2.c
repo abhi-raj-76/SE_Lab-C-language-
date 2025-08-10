@@ -8,6 +8,7 @@ typedef struct registerUser
     char address[100];
     float CMR;
     float OMR;
+    float Dues;
     bool loan;
 }RU;
 
