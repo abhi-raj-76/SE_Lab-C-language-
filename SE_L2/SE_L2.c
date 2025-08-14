@@ -41,22 +41,35 @@ int newUSN()
 int searchUSN()
 {
     int USN;
+    int current;
     printf("Enter your registered USN: \n:");
     scanf("%d",&USN);
-    return 1;
+    FILE *checkUSN;
+    checkUSN = fopen("USN.txt","r");
+    if(checkUSN == NULL)
+    {
+        perror("Error while opening file");
+        return -1;
+    }
+    while (fscanf(checkUSN,"%d",&current) != EOF)
+    {
+        if(current == USN)
+        {return 1;}
+    }
+    return 0;
 }
 void RegisterUser()
 {
     RU u1;
-    /*printf("Enter New user name: ");
+    /*printf("Enter your name: ");
     scanf("%s",&u1.name);
-    printf("Enter New user Mobile Number: ");
+    printf("Enter your Mobile Number: ");
     scanf("%d",&u1.mob);
-    printf("Enter New user mail: ");
+    printf("Enter your mail: ");
     scanf("%s",&u1.email);
-    printf("Enter New user address: ");
+    printf("Enter your address: ");
     scanf("%s",&u1.address);
-    printf("Enter New user CMR: ");
+    printf("Enter your CMR: ");
     scanf("%f",&u1.CMR);*/
     u1.USN = newUSN();
     u1.OMR = 0;
@@ -73,7 +86,7 @@ void subMenu()
         printf("1.Update Reading: \n");
         printf("2.Bill: \n");
         printf("3.Report: \n");
-        printf("4.Exit: \n:");
+        printf("4.Logout: \n:");
         scanf("%d",&choice);
         switch(choice)
         {
@@ -108,6 +121,7 @@ void Menu()
                 if(found == 1) 
                     subMenu();
                 else
+                    printf("Your are Not registered:");
                     Menu();
                 break;
             case 2:
