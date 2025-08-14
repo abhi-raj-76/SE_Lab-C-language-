@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdbool.h>
+#include<stdlib.h>
 typedef struct registerUser
 {
     char name[150];
@@ -15,8 +16,30 @@ typedef struct registerUser
 int newUSN()
 {
     FILE *usnData;
+    int usn = 1000;
     usnData = fopen("USN.txt","a+");
+    if(usnData == NULL)
+    {
+        perror("Error while opening file");
+        return -1;
+    }
+    int current;
+    while (fscanf(usnData,"%d",&current) != EOF)
+    {
+        if(current == 0)
+        {
+            fprintf(usnData,"%d ",usn);
+        }
+        else
+        {
+            fprintf(usnData,"%d ",current+1);
+            break;
+        }
+        
+    }
+    printf("%d",usn);
     fclose(usnData);
+    return usn;
 }
 int searchUSN()
 {
@@ -28,16 +51,16 @@ int searchUSN()
 void RegisterUser()
 {
     RU u1;
-    printf("Enter New user name:");
+    /*printf("Enter New user name: ");
     scanf("%s",&u1.name);
-    printf("Enter New user Mobile Number:");
+    printf("Enter New user Mobile Number: ");
     scanf("%d",&u1.mob);
-    printf("Enter New user mail:");
+    printf("Enter New user mail: ");
     scanf("%s",&u1.email);
-    printf("Enter New user address:");
+    printf("Enter New user address: ");
     scanf("%s",&u1.address);
-    printf("Enter New user CMR:");
-    scanf("%f",&u1.CMR);
+    printf("Enter New user CMR: ");
+    scanf("%f",&u1.CMR);*/
     u1.USN = newUSN();
     u1.OMR = 0;
     u1.loan = false;
@@ -48,7 +71,7 @@ void subMenu()
     int choice = 0;
     while(choice != 4)
     {
-        printf("---------------Sub Menu-----------------\n");
+        printf("\n---------------Sub Menu-----------------\n");
         printf("1.Update Reading: \n");
         printf("2.Bill: \n");
         printf("3.Report: \n");
@@ -75,7 +98,7 @@ void Menu()
     int choice = 0;
     while(choice != 3)
     {
-        printf("---------------Menu-----------------\n");
+        printf("\n---------------Menu-----------------\n");
         printf("1.Registered User: \n");
         printf("2.Not Registered User: \n");
         printf("3.Exit: \n:");
