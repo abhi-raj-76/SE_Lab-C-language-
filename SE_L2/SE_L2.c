@@ -23,21 +23,18 @@ int newUSN()
         perror("Error while opening file");
         return -1;
     }
-    int current;
-    while (fscanf(usnData,"%d",&current) != EOF)
+    int current = -1;
+    while (fscanf(usnData,"%d",&current) != EOF);
+    if(current == -1)
     {
-        if(current == 0)
-        {
-            fprintf(usnData,"%d ",usn);
-        }
-        else
-        {
-            fprintf(usnData,"%d ",current+1);
-            break;
-        }
-        
+        usn = 1000;
+        fprintf(usnData,"%d ",usn);
     }
-    printf("%d",usn);
+    else
+    {
+        usn = current+1;
+        fprintf(usnData,"%d ",usn);
+    }
     fclose(usnData);
     return usn;
 }
@@ -65,6 +62,7 @@ void RegisterUser()
     u1.OMR = 0;
     u1.loan = false;
     u1.Dues = 0;
+    printf("%d ",u1.USN);
 }
 void subMenu()
 {
