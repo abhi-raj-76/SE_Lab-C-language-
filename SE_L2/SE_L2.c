@@ -3,10 +3,10 @@
 #include<stdlib.h>
 typedef struct registerUser
 {
-    char name[150];
+    char name[50];
     int mob;
     int USN;
-    char email[50];
+    char email[100];
     char address[100];
     float CMR;
     float OMR;
@@ -75,7 +75,11 @@ void RegisterUser()
     u1.OMR = 0;
     u1.loan = false;
     u1.Dues = 0;
-    printf("%d %d %s %s %f",u1.USN,u1.mob,u1.email,u1.CMR);
+    FILE *userDataFile;
+    userDataFile = fopen("userData.txt","a+");
+    //printf("%d %d %s %s %f",u1.USN,u1.mob,u1.email,u1.CMR);
+    fprintf(userDataFile,"%d %s %d %s %s %f %f %s %f",u1.USN,u1.name,u1.mob,u1.email,u1.address,u1.CMR,u1.OMR,u1.loan,u1.loan);
+    fclose(userDataFile);
     return;
 }
 void subMenu()
