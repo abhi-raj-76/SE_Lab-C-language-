@@ -61,7 +61,7 @@ int searchUSN()
 void RegisterUser()
 {
     RU u1;
-    /*printf("Enter your name: ");
+    printf("Enter your name: ");
     scanf("%s",&u1.name);
     printf("Enter your Mobile Number: ");
     scanf("%d",&u1.mob);
@@ -70,12 +70,13 @@ void RegisterUser()
     printf("Enter your address: ");
     scanf("%s",&u1.address);
     printf("Enter your CMR: ");
-    scanf("%f",&u1.CMR);*/
+    scanf("%f",&u1.CMR);
     u1.USN = newUSN();
     u1.OMR = 0;
     u1.loan = false;
     u1.Dues = 0;
-    printf("%d ",u1.USN);
+    printf("%d %d %s %s %f",u1.USN,u1.mob,u1.email,u1.CMR);
+    return;
 }
 void subMenu()
 {
@@ -126,6 +127,7 @@ void Menu()
                 break;
             case 2:
                 RegisterUser();
+                subMenu();
                 break;
             case 3:
                 return;
