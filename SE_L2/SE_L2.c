@@ -4,7 +4,7 @@
 typedef struct registerUser
 {
     char name[50];
-    int mob;
+    char mob[15];
     int USN;
     char email[100];
     char address[100];
@@ -38,6 +38,27 @@ int newUSN()
     fclose(usnData);
     return usn;
 }
+void fetchData(int usn)
+{
+    int current;
+    RU usr;
+    FILE *actData;
+    actData = fopen("userData.txt","a+");
+    while (fscanf(actData,"%d",&current) == 1)
+    {
+        if(current == usn)
+        {
+            fscanf(actData,"|%49[^|]|%14[^|]|%99[^|]|%99[^|]|%f|%f|%d|%f",
+                          usr.name, usr.mob, usr.email, usr.address,
+                          &usr.CMR, &usr.OMR, &usr.loan, &usr.Dues);
+            usr.USN = usn;
+            printf("%s %d",usr.name,usr.USN);
+        }
+        while (fgetc(actData) != '\n' && !feof(actData)){}//if match then run and read the other data otherwise skip until next line \n not found
+    }
+    
+
+}
 int searchUSN()
 {
     int USN;
@@ -54,7 +75,10 @@ int searchUSN()
     while (fscanf(checkUSN,"%d",&current) != EOF)
     {
         if(current == USN)
-        {return 1;}
+        {
+            fetchData(USN);
+            return 1;
+        }
     }
     return 0;
 }
@@ -62,13 +86,13 @@ void RegisterUser()
 {
     RU u1;
     printf("Enter your name: ");
-    scanf("%s",&u1.name);
+    scanf("%s",u1.name);
     printf("Enter your Mobile Number: ");
-    scanf("%d",&u1.mob);
+    scanf("%s",u1.mob);
     printf("Enter your mail: ");
-    scanf("%s",&u1.email);
+    scanf("%s",u1.email);
     printf("Enter your address: ");
-    scanf("%s",&u1.address);
+    scanf("%s",u1.address);
     printf("Enter your CMR: ");
     scanf("%f",&u1.CMR);
     u1.USN = newUSN();
@@ -78,7 +102,8 @@ void RegisterUser()
     FILE *userDataFile;
     userDataFile = fopen("userData.txt","a+");
     //printf("%d %d %s %s %f",u1.USN,u1.mob,u1.email,u1.CMR);
-    fprintf(userDataFile,"%d %s %d %s %s %f %f %s %f",u1.USN,u1.name,u1.mob,u1.email,u1.address,u1.CMR,u1.OMR,u1.loan,u1.loan);
+    fprintf(userDataFile,"%d|%s|%s|%s|%s|%f|%f|%d|%f",u1.USN,u1.name,u1.mob,u1.email,u1.address,u1.CMR,u1.OMR,u1.loan,u1.Dues);
+    fputc('\n',userDataFile);
     fclose(userDataFile);
     return;
 }
