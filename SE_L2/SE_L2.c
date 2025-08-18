@@ -11,7 +11,7 @@ typedef struct registerUser
     float CMR;
     float OMR;
     float Dues;
-    bool loan;
+    char loan[10];
 }RU;
 int newUSN()
 {
@@ -48,9 +48,9 @@ void fetchData(int usn)
     {
         if(current == usn)
         {
-            fscanf(actData,"|%49[^|]|%14[^|]|%99[^|]|%99[^|]|%f|%f|%d|%f",
+            fscanf(actData,"|%49[^|]|%14[^|]|%99[^|]|%99[^|]|%f|%f|%9[^|]|%f",
                           usr.name, usr.mob, usr.email, usr.address,
-                          &usr.CMR, &usr.OMR, &usr.loan, &usr.Dues);
+                          &usr.CMR, &usr.OMR,usr.loan, &usr.Dues);
             usr.USN = usn;
             printf("%s %d",usr.name,usr.USN);
         }
@@ -97,12 +97,12 @@ void RegisterUser()
     scanf("%f",&u1.CMR);
     u1.USN = newUSN();
     u1.OMR = 0;
-    u1.loan = false;
+    //u1.loan = NULL;
     u1.Dues = 0;
     FILE *userDataFile;
     userDataFile = fopen("userData.txt","a+");
     //printf("%d %d %s %s %f",u1.USN,u1.mob,u1.email,u1.CMR);
-    fprintf(userDataFile,"%d|%s|%s|%s|%s|%f|%f|%d|%f",u1.USN,u1.name,u1.mob,u1.email,u1.address,u1.CMR,u1.OMR,u1.loan,u1.Dues);
+    fprintf(userDataFile,"%d|%s|%s|%s|%s|%f|%f|%s|%f",u1.USN,u1.name,u1.mob,u1.email,u1.address,u1.CMR,u1.OMR,u1.loan,u1.Dues);
     fputc('\n',userDataFile);
     fclose(userDataFile);
     return;
