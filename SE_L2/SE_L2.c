@@ -86,6 +86,7 @@ RU fetchPutData(int usn)
             printf("%s %d",usr.name,usr.USN);
         }
         while (fgetc(actData) != '\n' && !feof(actData)){}//if match then run and read the other data otherwise skip until next line \n not found
+        fclose(actData);
     }
     return usr;
 }
@@ -114,6 +115,7 @@ RU searchUSN()
         }
     }
     usr.check = 0;
+    fclose(checkUSN);
     return usr;
 }
 void RegisterUser()
