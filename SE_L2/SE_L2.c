@@ -12,7 +12,38 @@ typedef struct registerUser
     float OMR;
     float Dues;
     char loan[10];
+    int check;
 }RU;
+void updateReading(RU usr)
+{
+    float nCMR;
+    int usn;
+    printf("\nEnter new CMR:");
+    scanf("%f",&nCMR);
+    if(nCMR > usr.CMR)
+    {
+        usr.OMR = usr.CMR;
+        usr.CMR = nCMR;
+        printf("%f %f ",usr.CMR,usr.OMR);
+        FILE *fp;
+        fp = fopen("userData.txt","a+");
+        while (1)
+        {
+            long line_start = ftell(fp);
+            if (fscanf(fp, "%d", &usn) != 1) break;
+            if(usn == usr.USN)
+            {
+                fseek(fp, line_start, SEEK_SET);
+                printf("inside while loop");
+                fprintf(fp,"%d|%s|%s|%s|%s|%f|%f|%s|%f",usr.USN,usr.name,usr.mob,usr.email,usr.address,usr.CMR,usr.OMR,usr.loan,usr.Dues);
+                break;
+            }
+            while (fgetc(fp) != '\n' && !feof(fp)){}
+        }
+        
+    }
+    else{printf("INVALID INPUT");}
+}
 int newUSN()
 {
     FILE *usnData;
@@ -38,7 +69,7 @@ int newUSN()
     fclose(usnData);
     return usn;
 }
-void fetchData(int usn)
+RU fetchPutData(int usn)
 {
     int current;
     RU usr;
@@ -56,13 +87,13 @@ void fetchData(int usn)
         }
         while (fgetc(actData) != '\n' && !feof(actData)){}//if match then run and read the other data otherwise skip until next line \n not found
     }
-    
-
+    return usr;
 }
-int searchUSN()
+RU searchUSN()
 {
     int USN;
     int current;
+    RU usr;
     printf("Enter your registered USN: \n:");
     scanf("%d",&USN);
     FILE *checkUSN;
@@ -70,17 +101,20 @@ int searchUSN()
     if(checkUSN == NULL)
     {
         perror("Error while opening file");
-        return -1;
+        usr.check = -1;
+        return usr;
     }
     while (fscanf(checkUSN,"%d",&current) != EOF)
     {
         if(current == USN)
         {
-            fetchData(USN);
-            return 1;
+            usr = fetchPutData(USN);
+            usr.check = 1;
+            return usr;
         }
     }
-    return 0;
+    usr.check = 0;
+    return usr;
 }
 void RegisterUser()
 {
@@ -107,7 +141,7 @@ void RegisterUser()
     fclose(userDataFile);
     return;
 }
-void subMenu()
+void subMenu(RU usr)
 {
     int choice = 0;
     while(choice != 4)
@@ -121,6 +155,7 @@ void subMenu()
         switch(choice)
         {
             case 1:
+                updateReading(usr);
                 break;
             case 2:
                 break;
@@ -137,6 +172,7 @@ void subMenu()
 void Menu()
 {
     int choice = 0;
+    RU usr;
     while(choice != 3)
     {
         printf("\n---------------Menu-----------------\n");
@@ -147,16 +183,16 @@ void Menu()
         switch(choice)
         {
             case 1:
-                int found = searchUSN();
-                if(found == 1) 
-                    subMenu();
+                usr = searchUSN();
+                if(usr.check == 1) 
+                    subMenu(usr);
                 else
                     printf("Your are Not registered:");
                     Menu();
                 break;
             case 2:
                 RegisterUser();
-                subMenu();
+                subMenu(usr);
                 break;
             case 3:
                 return;
