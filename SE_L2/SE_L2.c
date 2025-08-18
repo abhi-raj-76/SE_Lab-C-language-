@@ -40,6 +40,7 @@ void updateReading(RU usr)
             }
             while (fgetc(fp) != '\n' && !feof(fp)){}
         }
+        fclose(fp);
         
     }
     else{printf("INVALID INPUT");}
