@@ -18,6 +18,7 @@ void updateReading(RU usr)
 {
     float nCMR;
     int usn;
+    printf("%f %s",usr.CMR,usr.name);
     printf("\nEnter new CMR:");
     scanf("%f",&nCMR);
     if(nCMR > usr.CMR)
@@ -26,7 +27,7 @@ void updateReading(RU usr)
         usr.CMR = nCMR;
         printf("%f %f ",usr.CMR,usr.OMR);
         FILE *fp;
-        fp = fopen("userData.txt","a+");
+        fp = fopen("userData.txt","r+");
         while (1)
         {
             long line_start = ftell(fp);
@@ -36,6 +37,7 @@ void updateReading(RU usr)
                 fseek(fp, line_start, SEEK_SET);
                 printf("inside while loop");
                 fprintf(fp,"%d|%s|%s|%s|%s|%f|%f|%s|%f",usr.USN,usr.name,usr.mob,usr.email,usr.address,usr.CMR,usr.OMR,usr.loan,usr.Dues);
+                fputc('\n',fp);
                 break;
             }
             while (fgetc(fp) != '\n' && !feof(fp)){}
@@ -76,7 +78,7 @@ RU fetchPutData(int usn)
     RU usr;
     FILE *actData;
     actData = fopen("userData.txt","a+");
-    while (fscanf(actData,"%d",&current) == 1)
+    while (fscanf(actData,"%d",&current) != EOF)
     {
         if(current == usn)
         {
@@ -87,8 +89,8 @@ RU fetchPutData(int usn)
             printf("%s %d",usr.name,usr.USN);
         }
         while (fgetc(actData) != '\n' && !feof(actData)){}//if match then run and read the other data otherwise skip until next line \n not found
-        fclose(actData);
     }
+    fclose(actData);
     return usr;
 }
 RU searchUSN()
@@ -106,11 +108,11 @@ RU searchUSN()
         usr.check = -1;
         return usr;
     }
-    while (fscanf(checkUSN,"%d",&current) != EOF)
+    while (fscanf(checkUSN,"%d",&current) == 1)
     {
         if(current == USN)
         {
-            usr = fetchPutData(USN);
+            usr = fetchPutData(current);
             usr.check = 1;
             return usr;
         }
@@ -119,7 +121,7 @@ RU searchUSN()
     fclose(checkUSN);
     return usr;
 }
-void RegisterUser()
+RU RegisterUser()
 {
     RU u1;
     printf("Enter your name: ");
@@ -137,12 +139,13 @@ void RegisterUser()
     //u1.loan = NULL;
     u1.Dues = 0;
     FILE *userDataFile;
-    userDataFile = fopen("userData.txt","a+");
+    userDataFile = fopen("userData.txt","r+");
+    if(userDataFile != NULL){fseek(userDataFile, 0, SEEK_END);}
     //printf("%d %d %s %s %f",u1.USN,u1.mob,u1.email,u1.CMR);
     fprintf(userDataFile,"%d|%s|%s|%s|%s|%f|%f|%s|%f",u1.USN,u1.name,u1.mob,u1.email,u1.address,u1.CMR,u1.OMR,u1.loan,u1.Dues);
     fputc('\n',userDataFile);
     fclose(userDataFile);
-    return;
+    return u1;
 }
 void subMenu(RU usr)
 {
@@ -194,7 +197,8 @@ void Menu()
                     Menu();
                 break;
             case 2:
-                RegisterUser();
+                usr = RegisterUser();
+                usr = searchUSN();
                 subMenu(usr);
                 break;
             case 3:
